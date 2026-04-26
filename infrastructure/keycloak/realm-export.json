@@ -1,0 +1,128 @@
+{
+  "id": "securedx",
+  "realm": "securedx",
+  "displayName": "SecureDx AI",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": true,
+  "roles": {
+    "realm": [
+      {
+        "name": "admin",
+        "description": "Administrator - full system access"
+      },
+      {
+        "name": "physician",
+        "description": "Physician - can run diagnostics and submit feedback"
+      },
+      {
+        "name": "compliance_officer",
+        "description": "Compliance Officer - audit log access only"
+      }
+    ]
+  },
+  "users": [
+    {
+      "username": "admin@clinic.local",
+      "email": "admin@clinic.local",
+      "emailVerified": true,
+      "enabled": true,
+      "firstName": "System",
+      "lastName": "Administrator",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "ChangeMe123!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["admin"],
+      "attributes": {
+        "clinic_id": ["clinic-delhi-001"]
+      }
+    },
+    {
+      "username": "physician@clinic.local",
+      "email": "physician@clinic.local",
+      "emailVerified": true,
+      "enabled": true,
+      "firstName": "Dr. Jane",
+      "lastName": "Smith",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "ChangeMe123!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["physician"],
+      "attributes": {
+        "clinic_id": ["clinic-delhi-001"]
+      }
+    },
+    {
+      "username": "compliance@clinic.local",
+      "email": "compliance@clinic.local",
+      "emailVerified": true,
+      "enabled": true,
+      "firstName": "Sarah",
+      "lastName": "Johnson",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "ChangeMe123!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["compliance_officer"],
+      "attributes": {
+        "clinic_id": ["clinic-delhi-001"]
+      }
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "securedx-api",
+      "name": "SecureDx API",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "dev-client-secret-change-in-production",
+      "bearerOnly": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "attributes": {
+        "access.token.lifespan": "3600"
+      }
+    },
+    {
+      "clientId": "securedx-frontend",
+      "name": "SecureDx Frontend",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "redirectUris": [
+        "http://localhost:3000/*",
+        "http://localhost/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3000",
+        "http://localhost"
+      ],
+      "protocol": "openid-connect",
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      }
+    }
+  ]
+}

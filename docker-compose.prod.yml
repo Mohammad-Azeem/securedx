@@ -1,0 +1,102 @@
+# =============================================================================
+# SecureDx AI — Production Override
+# Adds: TLS, resource limits, no source mounts, production logging
+# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up
+#        (or simply: make prod-up)
+# =============================================================================
+
+services:
+  postgres:
+    # No exposed ports in production — internal network only
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "2.0"
+    environment:
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256"
+
+  keycloak:
+    command: start --optimized --import-realm
+    environment:
+      KC_HOSTNAME_STRICT: "true"
+      KC_HTTP_ENABLED: "false"
+      KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/conf/tls.crt
+      KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/conf/tls.key
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "1.0"
+
+  api:
+    build:
+      context: ./services/api
+      dockerfile: Dockerfile         # Production Dockerfile (no reload)
+    environment:
+      ENVIRONMENT: production
+      LOG_LEVEL: INFO
+      RELOAD: "false"
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "2.0"
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+
+  inference:
+    build:
+      context: ./services/inference
+      dockerfile: Dockerfile
+    environment:
+      ENVIRONMENT: production
+      LOG_LEVEL: INFO
+    deploy:
+      resources:
+        limits:
+          memory: 4G          # ONNX inference needs headroom
+          cpus: "4.0"
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+
+  frontend:
+    build:
+      context: ./services/frontend
+      dockerfile: Dockerfile          # Production build (static files)
+      args:
+        VITE_API_BASE_URL: /api/v1    # Relative URL via nginx proxy
+        VITE_KEYCLOAK_URL: /auth
+        VITE_KEYCLOAK_REALM: securedx
+        VITE_KEYCLOAK_CLIENT_ID: securedx-frontend
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "0.5"
+
+  fl-client:
+    environment:
+      ENVIRONMENT: production
+      LOG_LEVEL: INFO
+      FL_ENABLED: "true"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "1.0"
+
+  nginx:
+    ports:
+      - "443:443"
+      - "80:80"     # Redirects to 443
+    volumes:
+      - ./infrastructure/nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+      - ./infrastructure/nginx/certs:/etc/nginx/certs:ro
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "0.5"

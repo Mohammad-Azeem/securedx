@@ -1,0 +1,9 @@
+flwr==1.6.0
+opendp==0.9.2
+numpy==1.26.4
+onnxruntime==1.17.1
+structlog==24.1.0
+sqlalchemy==2.0.27
+asyncpg==0.29.0
+psycopg2-binary==2.9.9
+tenacity==8.2.3

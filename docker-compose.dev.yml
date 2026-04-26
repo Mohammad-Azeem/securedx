@@ -1,0 +1,120 @@
+# =============================================================================
+# SecureDx AI — Development Override
+# Adds: hot reload, exposed ports, debug logging, test fixtures
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+# =============================================================================
+
+services:
+  postgres:
+    ports:
+      - "5432:5432"   # Expose for local DB tools (TablePlus, pgAdmin)
+    networks:
+      - securedx-internal
+
+  keycloak:
+    ports:
+      - "8080:8080"   # Keycloak admin console
+    networks:
+      - securedx-internal
+
+  api:
+    build:
+      context: ./services/api
+      dockerfile: Dockerfile.dev
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"   # FastAPI + Swagger UI at /docs
+    volumes:
+      - ./services/api:/app:cached          # Hot reload source
+      - audit_logs:/var/log/securedx/audit
+      - ./services/ml_training:/app/ml_training:cached  # Add this!
+    environment:
+      ENVIRONMENT: development
+      LOG_LEVEL: DEBUG
+      RELOAD: "true"
+    networks:
+      - securedx-internal
+
+  inference:
+    build:
+      context: ./services/inference
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8001:8001"   # Inference API
+    volumes:
+      - ./services/inference:/app:cached    # Hot reload source
+      - model_weights:/models
+    environment:
+      ENVIRONMENT: development
+      LOG_LEVEL: DEBUG
+    networks:
+      - securedx-internal
+
+  frontend:
+    build:
+      context: ./services/frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"   # Vite dev server
+    volumes:
+      - ./services/frontend/index.html:/app/index.html:cached
+      - ./services/frontend/src:/app/src:cached     # Hot reload source
+      - ./services/frontend/public:/app/public:cached
+      - /app/node_modules                            # Exclude node_modules from mount
+    environment:
+      VITE_API_BASE_URL: /api/v1
+      VITE_KEYCLOAK_URL: http://localhost/auth
+      VITE_KEYCLOAK_REALM: securedx
+      VITE_KEYCLOAK_CLIENT_ID: securedx-frontend
+      VITE_FL_ENABLED: "true"
+    networks:
+      - securedx-internal
+
+  fl-client:
+    build:
+      context: ./services/fl-client
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./services/fl-client:/app:cached
+      - model_weights:/models
+      - fl_queue:/var/securedx/fl-queue
+    environment:
+      # Use Map format (KEY: VALUE) without dashes for consistency
+      ENVIRONMENT: development
+      LOG_LEVEL: DEBUG
+      FL_ENABLED: "true"
+      
+      # Quoted because of the colon
+      FL_COORDINATOR_URL: "host.docker.internal:9091"
+      
+      # Privacy parameters
+      DP_EPSILON: 1.0
+      DP_DELTA: 1e-5
+      DP_CLIP_NORM: 1.0
+      
+      # Training parameters
+      FL_MIN_LOCAL_SAMPLES: 10
+      FL_SYNC_INTERVAL_HOURS: 24
+      
+      # Database connection
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: securedx
+      POSTGRES_USER: securedx_app
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - securedx-internal
+
+  nginx:
+    ports:
+      - "80:80"       # HTTP only in dev
+    volumes:
+      - ./infrastructure/nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - securedx-internal
+      - securedx-external

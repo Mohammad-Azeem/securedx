@@ -1,0 +1,77 @@
+Before sign In: 
+react-router-dom.js?v=dae6e299:4436 ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+warnOnce @ react-router-dom.js?v=dae6e299:4436
+logDeprecation @ react-router-dom.js?v=dae6e299:4439
+logV6DeprecationWarnings @ react-router-dom.js?v=dae6e299:4442
+(anonymous) @ react-router-dom.js?v=dae6e299:5314
+commitHookEffectListMount @ chunk-LNQWTQX2.js?v=dae6e299:16915
+commitPassiveMountOnFiber @ chunk-LNQWTQX2.js?v=dae6e299:18161
+commitPassiveMountEffects_complete @ chunk-LNQWTQX2.js?v=dae6e299:18129
+commitPassiveMountEffects_begin @ chunk-LNQWTQX2.js?v=dae6e299:18119
+commitPassiveMountEffects @ chunk-LNQWTQX2.js?v=dae6e299:18109
+flushPassiveEffectsImpl @ chunk-LNQWTQX2.js?v=dae6e299:19490
+flushPassiveEffects @ chunk-LNQWTQX2.js?v=dae6e299:19447
+(anonymous) @ chunk-LNQWTQX2.js?v=dae6e299:19328
+workLoop @ chunk-LNQWTQX2.js?v=dae6e299:197
+flushWork @ chunk-LNQWTQX2.js?v=dae6e299:176
+performWorkUntilDeadline @ chunk-LNQWTQX2.js?v=dae6e299:384Understand this warning
+react-router-dom.js?v=dae6e299:4436 ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+warnOnce @ react-router-dom.js?v=dae6e299:4436
+logDeprecation @ react-router-dom.js?v=dae6e299:4439
+logV6DeprecationWarnings @ react-router-dom.js?v=dae6e299:4445
+(anonymous) @ react-router-dom.js?v=dae6e299:5314
+commitHookEffectListMount @ chunk-LNQWTQX2.js?v=dae6e299:16915
+commitPassiveMountOnFiber @ chunk-LNQWTQX2.js?v=dae6e299:18161
+commitPassiveMountEffects_complete @ chunk-LNQWTQX2.js?v=dae6e299:18129
+commitPassiveMountEffects_begin @ chunk-LNQWTQX2.js?v=dae6e299:18119
+commitPassiveMountEffects @ chunk-LNQWTQX2.js?v=dae6e299:18109
+flushPassiveEffectsImpl @ chunk-LNQWTQX2.js?v=dae6e299:19490
+flushPassiveEffects @ chunk-LNQWTQX2.js?v=dae6e299:19447
+(anonymous) @ chunk-LNQWTQX2.js?v=dae6e299:19328
+workLoop @ chunk-LNQWTQX2.js?v=dae6e299:197
+flushWork @ chunk-LNQWTQX2.js?v=dae6e299:176
+performWorkUntilDeadline @ chunk-LNQWTQX2.js?v=dae6e299:384Understand this warning
+step1.html:1 An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.Understand this warning
+auth/realms/securedx/protocol/openid-connect/3p-cookies/step2.html:1 An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.Understand this warning
+login-status-iframe.html:1 An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.
+
+
+After Sign In:
+
+react-router-dom.js?v=dae6e299:4436 ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+
+react-router-dom.js?v=dae6e299:4436 ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+auth/realms/securedx…ookies/step1.html:1 An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.
+auth/realms/securedx…ookies/step2.html:1 An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.
+login-status-iframe.html:1 An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing.
+AppLayout.tsx:18 Uncaught ReferenceError: React is not defined
+    at AppLayout (AppLayout.tsx:18:3)
+AppLayout.tsx:18 Uncaught ReferenceError: React is not defined
+    at AppLayout (AppLayout.tsx:18:3)
+chunk-LNQWTQX2.js?v=dae6e299:14032 The above error occurred in the <AppLayout> component:
+
+    at AppLayout (http://localhost/src/components/shared/AppLayout.tsx:4:37)
+    at ProtectedRoute (http://localhost/src/App.tsx:30:3)
+    at RenderedRoute (http://localhost/node_modules/.vite/deps/react-router-dom.js?v=dae6e299:4131:5)
+    at Routes (http://localhost/node_modules/.vite/deps/react-router-dom.js?v=dae6e299:4601:5)
+    at Suspense
+    at Router (http://localhost/node_modules/.vite/deps/react-router-dom.js?v=dae6e299:4544:15)
+    at BrowserRouter (http://localhost/node_modules/.vite/deps/react-router-dom.js?v=dae6e299:5290:5)
+    at AuthProvider (http://localhost/src/hooks/useAuth.tsx:9:32)
+    at QueryClientProvider (http://localhost/node_modules/.vite/deps/@tanstack_react-query.js?v=dae6e299:4071:3)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+chunk-LNQWTQX2.js?v=dae6e299:19413 Uncaught ReferenceError: React is not defined
+    at AppLayout (AppLayout.tsx:18:3)
+====
+On signIn page
+page-events.js:6 Uncaught TypeError: Cannot read properties of undefined (reading 'length')
+    at HTMLDocument.handleKeyDown (page-events.js:6:18599)
+
+On clicking View Patients  link:
+patients.ts:19 Connecting to 'http://localhost:8000/api/v1/patients' violates the following Content Security Policy directive: "connect-src 'self' http://localhost:8080". The action has been blocked.
+
+On clicking Today's schedule and patient list link:
+Connecting to '<URL>' violates the following Content Security Policy directive: "connect-src 'self' <URL>". The action has been blocked.

@@ -1,0 +1,16 @@
+
+services:
+  ml-trainer:
+    build:
+      context: ./ml/training
+      dockerfile: Dockerfile
+    volumes:
+      - ./models:/models
+      - ./ml/training:/app
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=securedx
+    #depends_on:
+    #  - postgres
+    # Remove depends_on OR use external network
+    network_mode: "host"  # Use host network to access postgres

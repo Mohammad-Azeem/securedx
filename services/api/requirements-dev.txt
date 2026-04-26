@@ -1,0 +1,21 @@
+# =============================================================================
+# SecureDx API — Development & Test Dependencies
+# =============================================================================
+
+# --- Testing ---
+pytest==7.4.4
+pytest-asyncio==0.23.4
+pytest-cov==4.1.0
+pytest-watch==4.2.0
+httpx==0.26.0            # For async test client
+factory-boy==3.3.0       # Test fixtures
+
+# --- Linting & Formatting ---
+ruff==0.2.2
+mypy==1.8.0
+types-python-dateutil==2.8.19.20240106
+types-pytz==2024.1.0.20240203
+
+# --- Dev Utilities ---
+ipython==8.21.0
+rich==13.7.0             # Pretty terminal output
