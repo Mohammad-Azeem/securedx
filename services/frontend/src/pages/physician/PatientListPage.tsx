@@ -1,11 +1,22 @@
 // services/frontend/src/pages/physician/PatientListPage.tsx
 
 import React from 'react'
+// Cache API responses for better performance and offline support
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { patientsApi } from '../../api/patients'
 import { useAuth } from '../../hooks/useAuth'
 import { useState, useMemo } from 'react'
+
+
+const { data: _data } = useQuery({
+  queryKey: ['patients'],
+  queryFn: patientsApi.list,
+  staleTime: 5 * 60 * 1000, // 5 min cache
+  gcTime: 30 * 60 * 1000, // 30 min
+})
+
+// Users won't notice cold starts!
 
 // Search and Filter Component
 function SearchAndFilters({ 

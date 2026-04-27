@@ -5,11 +5,20 @@ import React from 'react'
 
 import { createContext, useContext, useEffect, useState, ReactNode, useRef } from 'react'
 import Keycloak from 'keycloak-js'
+//import { createClient } from '@supabase/supabase-js'
+
 
 const KEYCLOAK_URL = import.meta.env.VITE_KEYCLOAK_URL || 'http://localhost/auth'
 const KEYCLOAK_REALM = import.meta.env.VITE_KEYCLOAK_REALM || 'securedx'
 const KEYCLOAK_CLIENT_ID = import.meta.env.VITE_KEYCLOAK_CLIENT_ID || 'securedx-frontend'
 const TOKEN_STORAGE_KEY = 'securedx_access_token'
+
+/*
+const supabase = createClient(
+  'https://xxx.supabase.co',
+  'your-anon-key'
+)
+*/
 
 interface AuthContextType {
   isAuthenticated: boolean
@@ -140,6 +149,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   )
 }
 
+
 export function useAuth() {
   const context = useContext(AuthContext)
   if (!context) {
@@ -147,6 +157,23 @@ export function useAuth() {
   }
   return context
 }
+
+/*
+// needs to be updated and implemented properly(other needs to be updated to use keycloak instead of supabase) --- IGNORE ---
+// Hook for supabase auth for costless transition (to be removed after full Keycloak integration)
+// Free tier of supabase allows 5000 monthly active users, which is sufficient for early stages and testing
+// social login, email auth, row level security
+export function useAuth() {
+  const login = () => supabase.auth.signInWithPassword({
+    email: 'user@example.com',
+    password: 'password'
+  })
+  
+  const logout = () => supabase.auth.signOut()
+  
+  return { login, logout }
+}
+*/
 
 // Export keycloak instance for axios interceptor
 export function getKeycloakToken(): string | undefined {

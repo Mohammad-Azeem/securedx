@@ -1,0 +1,32 @@
+services:
+  # API Service
+  - type: web
+    name: securedx-api
+    runtime: docker
+    dockerfilePath: ./services/api/Dockerfile
+    envVars:
+      #- key: DATABASE
+      # Costless option: Use a free PostgreSQL database provider like Neon or Supabase. 
+      #These services offer free tiers that are suitable for development and small projects.
+      - key: DATABASE_URL=postgresql://neondb_owner:npg_6YQTZRuN0ICE@ep-calm-wildflower-ams56x8s.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require
+        fromDatabase:
+          name: securedx-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_ORIGINS
+        value: https://securedx.vercel.app
+    healthCheckPath: /health
+    
+  # Database
+  - type: pserv
+    name: securedx-db
+    runtime: postgresql
+    databaseName: securedx
+    databaseUser: securedx_app
+    plan: free
+    
+  # ⚠️ Limitations:
+  # - Spins down after 15min inactivity
+  # - Cold start: ~30 seconds
+  # - 750 hours/month
