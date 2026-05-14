@@ -1,8 +1,3 @@
-# securedx
-SecureDx AI is an on-device, federated learning diagnostic assistant that delivers AI-powered clinical decision support without ever exposing raw Protected Health Information (PHI) outside the clinic's local network.
-
-
-
 # 🔒 SecureDx AI
 
 > **Privacy-First Clinical Decision Support for Small-to-Medium Healthcare Clinics**
